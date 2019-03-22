@@ -9,7 +9,7 @@ const conf = {
   instances: 1,
   max_memory_restart: '100M',
   env: {
-    'CURRENT_INDEX': fileIndex
+    'CURRENT_INDEX': 0
   },
   error_file: './pm2-logs/pm2-error.log',
   out_file: './pm2-logs/pm2.log'
@@ -47,17 +47,16 @@ const onSuccessStart = (id) => {
   pm2.sendDataToProcessId({
     type : 'onProcessStart',
     data : {
-      some : 'data',
-      hello : true
+      fileIndex: fileIndex
     },
     topic: 'DEFAULT_TOPIC',
     id: id,
-  }, function(err, res) {
+  }, (err, res) => {
+    fileIndex++
     console.log(err);
-    console.log(res);
+    //console.log(res);
   });
 }
-
 
 const listenForProcess = () => {
   pm2.launchBus(function(err, bus) {
@@ -68,6 +67,13 @@ const listenForProcess = () => {
       const data = packet.data
 
       console.log('new message', processId, data)
+    });
+
+    bus.on('processAction:fileCreated', (packet) => {
+      const processId = packet.process.pm_id
+      const data = packet.data
+      console.log('processAction:fileCreated', processId, data)
+      onSuccessStart(processId)
     });
   });
 }

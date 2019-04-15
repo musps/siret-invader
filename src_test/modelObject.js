@@ -53,4 +53,3 @@ module.exports = function (dataArr) {
 
   return modelObj
 }
-

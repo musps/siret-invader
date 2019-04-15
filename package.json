@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "mgd": "mongod --dbpath ./persistence-mongodb",
-    "pm": "node pm2.js"
+    "start-db": "mongod --dbpath ./persistence-mongodb",
+    "start": "pm2 start pm2-entry.js",
+    "pause": "pm2 stop pm2-entry.js",
+    "stop": "pm2 kill"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +18,7 @@
     "lazy": "^1.0.11",
     "line-input-stream": "1.0.1",
     "mongoose": "5.4.2",
-    "pm2": "3.2.4"
+    "pm2": "3.2.4",
+    "pmx": "^1.6.7"
   }
 }

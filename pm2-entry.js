@@ -1,10 +1,10 @@
 const pm2 = require('pm2')
+const appName = 'siret-invader'
 
 let fileIndex = 0
 
 const conf = {
-  name: 'node-app-1',
-  script: './app.js',
+  script: './pm2-main.js',
   exec_mode: 'cluster',
   instances: 4,
   max_memory_restart: '100M',
@@ -22,16 +22,10 @@ pm2.connect(async (err) => {
   } else {
     console.log('PM2 connected')
 
-    await pm2.start(conf, (err, apps) => {
+    pm2.start(conf, (err, apps) => {
       if (err) {
         console.log('pm2 start error', err)
       } else {
-        apps.map(app => {
-            const instanceId = app.pm2_env.pm_id
-            //sendJobToInstance(instanceId, fileIndex)
-            //fileIndex++
-        })
-
         listenInstances()
       }
     })
@@ -39,13 +33,15 @@ pm2.connect(async (err) => {
 })
 
 const sendJobToInstance = (instanceId, fileIndex) => {
-  console.log('sendJobToInstance', instanceId, fileIndex)
+  const nextindex = fileIndex
+  fileIndex++
 
+  console.log('sendJobToInstance', instanceId, nextindex)
   pm2.sendDataToProcessId({
     type : 'action::startJob',
     id: instanceId,
     data : {
-      fileIndex: fileIndex
+      fileIndex: nextindex
     },
     topic: 'DEFAULT_TOPIC'
   }, (err, res) => {
@@ -54,7 +50,7 @@ const sendJobToInstance = (instanceId, fileIndex) => {
 }
 
 const listenInstances = () => {
-  pm2.launchBus(function(err, bus) {
+  pm2.launchBus((err, bus) => {
     // Contains : {process, data, at}
     // process.pm_id
     bus.on('instance::ready', (packet) => {
@@ -79,6 +75,22 @@ const listenInstances = () => {
     });
   });
 }
+
+process.on('SIGINT', function() {
+  console.log('pm2-entry SIGINT', 'ok');
+  process.exit(0);
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 

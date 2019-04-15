@@ -6,6 +6,7 @@
   "scripts": {
     "start-db": "mongod --dbpath ./persistence-mongodb",
     "start": "pm2 start pm2-entry.js",
+    "restart": "pm2 restart pm2-entry.js",
     "pause": "pm2 stop pm2-entry.js",
     "stop": "pm2 kill"
   },

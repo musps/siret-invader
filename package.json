@@ -8,7 +8,8 @@
     "start": "pm2 start pm2-entry.js",
     "restart": "pm2 restart pm2-entry.js",
     "pause": "pm2 stop pm2-entry.js",
-    "stop": "pm2 kill"
+    "stop": "pm2 kill",
+    "eslint": "./node_modules/.bin/eslint"
   },
   "author": "",
   "license": "ISC",
@@ -21,5 +22,10 @@
     "mongoose": "5.4.2",
     "pm2": "3.2.4",
     "pmx": "^1.6.7"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2"
   }
 }

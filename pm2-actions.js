@@ -17,8 +17,6 @@ const sendJobToInstance = (instanceId, fileIndex) => {
 }
 
 const sendPauseToInstance = (instanceId) => {
-  isPause = true
-
   pm2.sendDataToProcessId({
     type : 'action::pauseJob',
     id: instanceId,
@@ -32,8 +30,6 @@ const sendPauseToInstance = (instanceId) => {
 }
 
 const sendRemuseToInstance = (instanceId) => {
-  isPause = true
-
   pm2.sendDataToProcessId({
     type : 'action::resumeJob',
     id: instanceId,

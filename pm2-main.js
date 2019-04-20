@@ -1,6 +1,8 @@
 const processId = process.env.pm_id || null
 let isPause = true
 
+console.log('process start', processId)
+
 // Check if script is start by PM2.
 if (!processId) {
   process.exit(0)
@@ -22,12 +24,16 @@ setTimeout(() => {
 
 const startJob = (data) => {
   isPause = false
-
-  if (! isPause) {
-    setInterval(() => {
+  setInterval(() => {
+    if (! isPause) {
       console.log('time processId', processId)
-    }, 2000)
-  }
+    }
+  }, 2000)
+}
+
+const pauseJob = () => {
+  console.log('pausejob', processId)
+  isPause = true
 }
 
 process.on('message', ({ type, data, topic }) => {
@@ -35,6 +41,9 @@ process.on('message', ({ type, data, topic }) => {
     case 'action::startJob':
       startJob(data)
       break
+    case 'action::pauseJob':
+      pauseJob()
+      break;
     default:
       console.log('no action found', type)
       break

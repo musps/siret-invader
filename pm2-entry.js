@@ -17,7 +17,7 @@ const conf = {
   out_file: './pm2-logs/pm2.log'
 }
 
-pm2.connect(async (err) => {
+pm2.connect((err) => {
   if (err) {
     console.error(err)
     process.exit(2)
@@ -28,6 +28,7 @@ pm2.connect(async (err) => {
       if (err) {
         console.log('pm2 start error', err)
       } else {
+        // Handle start.
         setTimeout(() => {
           apps.map(app => {
               const instanceId = app.pm2_env.pm_id
@@ -35,7 +36,23 @@ pm2.connect(async (err) => {
           })
         }, 2000)
 
+        // Handle start.
         listenInstances()
+
+        // Handle pause.
+        process.on('SIGINT', () => {
+          isPause = true
+          console.log('pause enabled')
+
+          apps.map(app => {
+              const instanceId = app.pm2_env.pm_id
+              pm2.stop(instanceId)
+              //actions.sendPauseToInstance(instanceId)
+          })
+          setTimeout(() => {
+            process.kill(0)
+          }, 2000)
+        })
       }
     })
   }
@@ -67,16 +84,3 @@ const listenInstances = () => {
     });
   });
 }
-
-process.on('SIGINT', () => {
-  isPause = true
-  console.log('pause enabled')
-  process.exit(0)
-})
-
-
-
-
-
-
-

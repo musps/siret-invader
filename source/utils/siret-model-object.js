@@ -1,4 +1,4 @@
-module.exports = function (dataArr) {
+module.exports = function modelObject(dataArr) {
   const modelObj = {
     siren: null,
     nic: null,

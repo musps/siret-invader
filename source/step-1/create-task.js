@@ -1,12 +1,12 @@
 const {
   createDir,
-  printLog,
   splitCSV,
   saveLog
 } = require('./create-task-fn')
+const printLog = require('../utils/print-log')
 
 const csvPath = './StockEtablissement_utf8.csv'
-const taskDir = './task-in-progress'
+const taskDir = './task'
 
 createDir(taskDir).then(() => {
   printLog('Init')

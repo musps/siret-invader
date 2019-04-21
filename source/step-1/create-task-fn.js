@@ -2,13 +2,6 @@ const csvSplitStream = require('csv-split-stream')
 const fs = require('fs')
 const jsonfile = require('jsonfile')
 
-const printLog = (text = '', state = false) => {
-  const y = '✅'
-  const n = '☑️'
-
-  console.log((state ? y : n), ' ', text)
-}
-
 const createDir = async path => (
   new Promise((resolve) => {
     if (!fs.existsSync(path)) {
@@ -25,9 +18,10 @@ const buildLog = (filePath, nbFile, filePrefix, ext) => {
 
   for (let i = 0; i < nbFile; i += 1) {
     log.push({
+      id: i,
       file: `${filePath}/${filePrefix}${i}${ext}`,
       cursor: 0,
-      done: false
+      state: 0
     })
   }
   return log

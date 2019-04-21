@@ -9,7 +9,8 @@
     "restart": "pm2 restart pm2-entry.js",
     "pause": "pm2 stop pm2-entry.js",
     "stop": "pm2 kill",
-    "eslint": "./node_modules/.bin/eslint"
+    "eslint": "./node_modules/.bin/eslint",
+    "init-step-1": "node ./source/create-task.js"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2"
+    "eslint-plugin-import": "^2.17.2",
+    "ora": "^3.4.0"
   }
 }

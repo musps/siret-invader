@@ -13,5 +13,12 @@
         "ecmaVersion": 2018
     },
     "rules": {
+        "semi": ["error", "never"],
+        "comma-dangle": [2, "never"],
+        "class-methods-use-this": "off",
+        "comma-dangle": [2, "never"],
+        "no-continue": "off",
+        "no-multiple-empty-lines": ["error", { "max": 1 }],
+        "no-nested-ternary": "off"
     }
 }

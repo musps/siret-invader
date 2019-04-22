@@ -1,7 +1,11 @@
 /node_modules
 package-lock.json
 /task
-/pm2-logs
 helper.md
 StockEtablissement_utf8.csv
 /persistence-mongodb
+
+pm2-logs/*
+pm2-logs/.gitkeep 
+persistence-mongodb/*
+!persistence-mongodb/.gitkeep 

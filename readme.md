@@ -24,6 +24,7 @@ cd siret-invader
 
 # Install dependencies
 npm install
+
 ```
 
 ## Step 2 - Download data
@@ -47,6 +48,10 @@ DB_PATHH=mongodb://localhost:27017/SiretInvader
 
 When everything is setup  correctly you can start the index process.
 First you need prepare your big csv file and make it smaller.
+
+* Create `pm2-logs` folder.
+
+* Create `persistence-mongodb` folder.
 
 * Run `npm run prepare` 
 

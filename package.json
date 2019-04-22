@@ -10,8 +10,10 @@
     "restart": "pm2 restart ecosystem.config.js",
     "stop": "pm2 stop ecosystem.config.js",
 
-    "eslint": "./node_modules/.bin/eslint",
-    "init-step-1": "node ./source/step-1/create-task.js"
+    "eslint": "./node_modules/.bin/eslint ./source",
+
+    "init-step-1": "node ./source/step-1/create-task.js",
+    "init-step-2": "node ./source/step-2/pm2-entry.js"
   },
   "author": "",
   "license": "ISC",

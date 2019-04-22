@@ -49,7 +49,10 @@ module.exports = function modelObject(dataArr) {
     nomenclatureactiviteprincipaleetablissement: null,
     caractereemployeuretablissement: null
   }
-  Object.keys(modelObj).map((field, i) => (modelObj[field] = dataArr[i] || null))
+  Object.keys(modelObj).map((field, i) => {
+    modelObj[field] = dataArr[i] || null
+    return null
+  })
 
   return modelObj
 }

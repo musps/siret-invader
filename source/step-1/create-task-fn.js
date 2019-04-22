@@ -65,6 +65,5 @@ const splitCSV = async ({
 module.exports = {
   createDir,
   saveLog,
-  splitCSV,
-  printLog
+  splitCSV
 }

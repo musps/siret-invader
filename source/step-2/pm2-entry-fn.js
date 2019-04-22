@@ -2,15 +2,11 @@ const jsonfile = require('jsonfile')
 
 const getCurrentFile = (processId = 1, filePath, currentFile, cb) => {
   setTimeout(() => {
-    let nextFileIndex = currentFile.id || null
-
     jsonfile.readFile(filePath)
       .then((obj) => {
-        if (!nextFileIndex) {
-          nextFileIndex = obj.findIndex(i => i.state === 0)
-        }
+        const nextFileIndex = obj.findIndex(i => i.state === 0)
 
-        if (!nextFileIndex) {
+        if (nextFileIndex === -1) {
           cb(false)
         } else {
           const nextFile = obj[nextFileIndex]
@@ -22,31 +18,29 @@ const getCurrentFile = (processId = 1, filePath, currentFile, cb) => {
             if (err) {
               cb(false)
             } else {
-              cb({...nextFile})
+              cb({ ...nextFile })
             }
           })
         }
       })
-      .catch(error => cb(false))
+      .catch(() => cb(false))
   }, (processId * 1000))
 }
 
 const saveCurrentFile = (processId = 1, filePath, currentFile, cb) => {
   setTimeout(() => {
-    let nextFileIndex = currentFile.id || null
-
-    console.log('filePath', filePath)
-
+    const nextFileIndex = currentFile.id === null ? null : currentFile.id
 
     jsonfile.readFile(filePath)
       .then((obj) => {
-        if (!nextFileIndex) {
+        const nextObj = { ...obj }
+
+        if (nextFileIndex === null) {
           cb(false)
         }
 
-        currentFile.state = 0
-        obj[nextFileIndex] = currentFile
-        jsonfile.writeFile(filePath, obj, {
+        nextObj[nextFileIndex] = currentFile
+        jsonfile.writeFile(filePath, nextObj, {
           spaces: 2
         }, (err) => {
           if (err) {
@@ -56,7 +50,7 @@ const saveCurrentFile = (processId = 1, filePath, currentFile, cb) => {
           }
         })
       })
-      .catch(error => cb(false))
+      .catch(() => cb(false))
   }, (processId * 1000))
 }
 

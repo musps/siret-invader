@@ -1,48 +1,23 @@
-const jsonfile = require('jsonfile')
-
 const Bulk = require('./pm2-entry-bulk')
-const printLog = require('../utils/print-log')
-const { getCurrentFile, saveCurrentFile } = require('./pm2-entry-fn')
 
 const processId = process.env.pm_id || 0
-const file = './task/output-log.json'
-const bulk = new Bulk()
 
-// { id: number, file: string, cursor: number, state: number }
-let currentFile = { }
+const logFile = './task/output-log.json'
 
-getCurrentFile(processId, file, currentFile, (nextFile) => {
-  if (!nextFile) {
-    console.log('something went wrong for process id ', processId)
-  } else {
-    console.log('done => ', nextFile)
-    currentFile = nextFile
+const bulk = new Bulk(processId)
 
-    // Init bulk.
-    bulk.initialize({
-      filePath: currentFile.file,
-      skip: 1,
-      take: 10000
-    }, () => {
-      bulk.start(loop => console.log('loop', bulk.getSkip(), loop))
-    })
-    // Init bulk.
-  }
-})
+bulk.connectDatabase(() => {
+  bulk.setLogFile(logFile)
 
-/**
- * Hnadle on PM2 stop|kill signal.
- */
-process.on('SIGINT', () => {
-  saveCurrentFile(processId, file, currentFile, (state) => {
-    printLog(`SIGINT ${processId} done`)
-    // Close database connection.
-    bulk.setPause(true)
-    process.exit(1)
+  bulk.onFileDone(() => {
+    console.log('on file done')
+    bulk.initializeFile(() => bulk.start())
   })
-})
 
-/**
- * Keep the process alive.
- */
-setInterval(() => { }, 1000)
+  bulk.onPauseReady(() => {
+    console.log('on pause ready')
+    process.exit(0)
+  })
+
+  bulk.initializeFile(() => bulk.start())
+})

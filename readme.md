@@ -1,5 +1,7 @@
 # Siret invader 
 
+Insert mass data in MongoDB with bulk and pm2 as process manager.
+
 ## CLI helper
 
 | Command | Action |
@@ -40,3 +42,21 @@ CSV_PATH=./StockEtablissement_utf8.csv
 # MongoDB connection string.
 DB_PATHH=mongodb://localhost:27017/SiretInvader
 ```
+
+## Step 4 - Start process
+
+When everything is setup  correctly you can start the index process.
+First you need prepare your big csv file and make it smaller.
+
+* Run `npm run prepare` 
+
+When it's done you can start you MongoDB
+
+* Run `npm run start-db`
+
+Then you can start the main script (indexation process).
+
+* Run `npm run start`
+Whenever you need to pause your script run `npm run start` then `npm run restart` when you feel free to continue.
+
+At the end all pm2 process while fade out (killed).

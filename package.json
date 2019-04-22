@@ -5,21 +5,18 @@
   "main": "index.js",
   "scripts": {
     "start-db": "mongod --dbpath ./persistence-mongodb",
-
     "start": "pm2 start ecosystem.config.js",
     "restart": "pm2 restart ecosystem.config.js",
     "stop": "pm2 stop ecosystem.config.js",
-
     "eslint": "./node_modules/.bin/eslint ./source",
-
-    "init-step-1": "node ./source/step-1/create-task.js",
-    "init-step-2": "node ./source/step-2/pm2-entry.js"
+    "prepare": "node ./source/step-1/create-task.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "csv-parser": "2.1.0",
     "csv-split-stream": "1.0.2",
+    "dotenv": "^7.0.0",
     "jsonfile": "5.0.0",
     "lazy": "^1.0.11",
     "line-input-stream": "1.0.1",

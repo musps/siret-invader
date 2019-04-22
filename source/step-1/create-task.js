@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const {
   createDir,
   splitCSV,
@@ -5,8 +7,13 @@ const {
 } = require('./create-task-fn')
 const printLog = require('../utils/print-log')
 
-const csvPath = './StockEtablissement_utf8.csv'
+const csvPath = process.env.CSV_PATH || null
 const taskDir = './task'
+
+if (!csvPath) {
+  printLog('CSV_PATHP must set the csv path location.', 'x')
+  process.exit(0)
+}
 
 createDir(taskDir).then(() => {
   printLog('Init')

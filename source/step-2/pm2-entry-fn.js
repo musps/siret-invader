@@ -33,7 +33,7 @@ const saveCurrentFile = (processId = 1, filePath, currentFile, cb) => {
 
     jsonfile.readFile(filePath)
       .then((obj) => {
-        const nextObj = { ...obj }
+        const nextObj = obj
 
         if (nextFileIndex === null) {
           cb(false)

@@ -1,13 +1,16 @@
+require('dotenv').config()
+
 const EventEmitter = require('events')
 const mongoose = require('mongoose')
 const Lazy = require('lazy')
 const fs = require('fs')
 
+const printLog = require('../utils/print-log')
 const SiretModel = require('../utils/siret-model')
 const siretModelObject = require('../utils/siret-model-object')
 const fileHandler = require('./pm2-entry-fn')
 
-const uri = 'mongodb://localhost:27017/StockEtablissement'
+const uri = process.env.DB_PATH || ''
 
 class Bulk {
   constructor(processId) {
@@ -41,11 +44,13 @@ class Bulk {
       this.getLogFile(),
       this.getCurrentFile(),
       (nextFile) => {
+        console.log('nextFile', nextFile)
+
         if (!nextFile) {
-          console.log('Close process', this.getProcessId())
+          printLog(`Close process => ${this.getProcessId()}`)
           process.exit(0)
         } else {
-          console.log('done => ', nextFile)
+          console.log('done =>', nextFile)
           this.state.currentFile = nextFile
 
           this.initialize({
@@ -64,7 +69,7 @@ class Bulk {
       if (state === 3) {
         this.emitFileDone()
       } else {
-        console.log('new insert', insertedCount)
+        printLog(`new insert => ${insertedCount}`)
       }
     })
   }
@@ -183,10 +188,21 @@ class Bulk {
   }
 
   connectDatabase(callback) {
-    mongoose.connect(uri, { useNewUrlParser: true })
+    if (!uri) {
+      printLog('DB_PATHH must set a valid connection string.', 'x')
+      process.exit(0)
+    }
+
+    mongoose
+      .connect(uri, { useNewUrlParser: true })
+      .catch(() => {
+        printLog('Something went wrong while connecting to database', 'x')
+        process.exit(0)
+      })
+
     mongoose.connection.on('open', (err) => {
       if (err) {
-        process.exit(1)
+        process.exit(0)
       } else {
         callback(true)
       }

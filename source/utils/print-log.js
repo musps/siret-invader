@@ -1,8 +1,11 @@
-const printLog = (text = '', state = false) => {
-  const y = '✅'
-  const n = '☑️'
+const printLog = (text = '', state = 'n') => {
+  const s = {
+    y: '✅',
+    n: '☑️',
+    x: '❌'
+  }
 
-  console.log((state ? y : n), ' ', text)
+  console.log((s[state] || null), ' ', text)
 }
 
 module.exports = printLog

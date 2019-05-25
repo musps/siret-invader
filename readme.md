@@ -33,7 +33,7 @@ npm install
 * Unzip it and move it inside the project location.
 
 ## Step 3 - Config variables
-* You need define the those variables.
+* You need define those variables.
 ```
 # ./env
 
